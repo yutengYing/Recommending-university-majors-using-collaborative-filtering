@@ -24,7 +24,7 @@ class ItemBasedCF():
         self.major_count = 0
 
         print('Similar major number = %d' % self.n_sim_major)
-        print('Recommneded major number = %d' % self.n_rec_major)
+        print('Recommended major number = %d' % self.n_rec_major)
 
     # 读文件得到“用户-专业”数据
     def get_dataset(self, filename, pivot=0.75):
@@ -32,7 +32,7 @@ class ItemBasedCF():
         testSet_len = 0
         for line in self.load_file(filename):
             user, info1, info2, rating, major = line.split(',')
-            if (random.random() < pivot):
+            if random.random() < pivot:
                 self.trainSet.setdefault(user, {})
                 self.trainSet[user][major] = rating
                 trainSet_len += 1
