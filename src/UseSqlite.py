@@ -39,7 +39,7 @@ class RiskQuery(Sqlite3Template):
     def format_results(self):
         output = []
         for row in self.results.fetchall():
-            output.append(', '.join([str(i) for i in row]))
+            output.append(','.join([str(i) for i in row]))
         return output
         # return '\n\n'.join(output)
 

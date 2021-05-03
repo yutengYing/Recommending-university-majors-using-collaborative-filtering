@@ -52,7 +52,7 @@ class BookMark:
         items = list(counts.items())
         items.sort(key=lambda x: x[1], reverse=True)  # 根据词语出现的次数进行从大到小排序
 
-        print(items[0:30])
+        # print(items[0:30])
         # for i in range(20):
         # word, count = items[i]
         # print("{0:<5}{1:>5}".format(word, count))
@@ -83,7 +83,21 @@ def like_distance_helper(dict1, dict2):
     for j in range(len(a)):
         result2 += a[j] ** 2  # sum(X*X)
         result3 += b[j] ** 2  # sum(Y*Y)
-    return result1 / ((result2 * result3) ** 0.5)
+    return round(result1 / ((result2 * result3) ** 0.5), 4)
+
+
+def transform(root_path):
+    files = os.listdir(root_path)
+    for file in files:
+        print(root_path + '/' + file)
+        # BookMark.html_to_markdown(root_path + '/' + file)
+        # BookMark.keep_title(root_path + '/' + file)
+
+    #     if not os.path.isdir(root_path + '/' + file):  # not a dir
+    #         all_files.append(root_path + '/' + file)
+    #     else:  # is a dir
+    #         get_file((root_path + '/' + file), all_files)
+    # return all_files
 
 
 if __name__ == "__main__":
@@ -92,7 +106,8 @@ if __name__ == "__main__":
     # BookMark.keep_title('../resource/书签/书签地球_1618112030364.html')
     # BookMark.html_to_markdown('../resource/书签/书签地球_1618112020822.html')
     # BookMark.keep_title('../resource/书签/书签地球_1618112020822.html')
-    print(like_distance('../resource/书签/书签地球_1618112020822.md', '../resource/书签/书签地球_1618112030364.md'))
+    # print(like_distance('../resource/书签/书签地球_1618112020822.md', '../resource/书签/书签地球_1618112030364.md'))
     # print(like_distance_helper({'哔哩': 2}, {'哔哩': 10}))
     # print(like_distance_helper({'哔哩': 2}, {'莉莉': 2}))
-    # print(like_distance_helper({}, {'莉莉': 2}))
+    # print(like_distance_helper({}, {'莉莉': 2})).
+    transform('../resource/书签')
