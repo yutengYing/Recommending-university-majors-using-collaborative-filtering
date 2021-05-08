@@ -56,3 +56,4 @@ if __name__ == '__main__':
     mr = MajorRecommender()
     mr.recommend_for(applicant)
     # print(bookmark_analysis.like_distance('../resource/书签/书签地球_1618830145650.md','../resource/书签/书签地球_1618112020822.md'))
+
