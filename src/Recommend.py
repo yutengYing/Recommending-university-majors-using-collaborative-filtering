@@ -1,5 +1,5 @@
-from UseSqlite import InsertQuery, RiskQuery
-from src import bookmark_analysis
+from UseSqlite import RiskQuery
+import bookmark_analysis
 
 
 class Applicant:
@@ -9,79 +9,50 @@ class Applicant:
 
 
 class MajorRecommender:
-    def __init__(self, db_filename):
-        self.db_filename = db_filename
+    def __init__(self):
+        self.db_filename = 'data.db'
 
-    def recommend_for(self):
-        pass
+    def recommend_for(self, applicant=Applicant):
+        scores = applicant.scores
+        bookmark_file = applicant.bookmark_file
 
-    def calc_user_sim(self, bookmark_file):
-        rq = RiskQuery(self)
-        rq.instructions('SELECT ID,bookmark_file FROM applicant WHERE bookmark_file IS NOT NULL')
+        rq = RiskQuery(self.db_filename)
+        rq.instructions('SELECT appraiserID,school_ID,ID,minimum_requirement,bookmark_file,appraisalForMajor.star '
+                        'FROM major,appraisalForMajor '
+                        'WHERE major.ID = appraisalForMajor.majorID '
+                        'and major.school_ID = appraisalForMajor.schoolID '
+                        'and appraisalForMajor.bookmark_file is not null ')
         rq.do()
-        applicant_result = rq.format_results()
-
-        rq = RiskQuery(self)
-        rq.instructions('SELECT applicantID,schoolId,majorId,bookmark_file '
-                        'FROM admission '
-                        'WHERE bookmark_file IS NOT NULL')
-        rq.do()
-        admission_result = rq.format_results()
+        appraisal_result = rq.format_results()
 
         # 将字符串分割成元组，算出书签相似度后添加入元组，再将元组存入列表
         list_of_tuple = []
-        for item in admission_result:
+        for item in appraisal_result:
             result = tuple(item.split(','))
             # print(result)
-            similarity = [str(bookmark_analysis.like_distance(str(result[3]), bookmark_file))]
-            result += tuple(similarity)
-            # print(result)
-            list_of_tuple.append(result)
+            if result[3] > scores:
+                continue
+            else:
+                # 计算相似度
+                similarity = bookmark_analysis.like_distance(str(result[4]), bookmark_file)
+                # 计算推荐度即相似度和评价的积
+                tendency = [str(round(similarity * int(result[5]), 3))]
+                result += tuple(tendency)
+                list_of_tuple.append(result)
         # print(list_of_tuple)
+
         # 按相似度从大到小排序
-        list_of_tuple.sort(key=lambda x: x[4], reverse=True)
+        list_of_tuple.sort(key=lambda x: x[6], reverse=True)
         # print(list_of_tuple)
-        print("{0:<25}{1:<10}{2:<10}{3:>10}".format('ID', 'schoolID', 'majorID', 'similarity'))
+        print("{0:<15}{1:<15}{2:<10}".format('School ID', 'Major ID', 'Recommend Level'))
         for i in range(len(list_of_tuple)):
-            admission_id, schoolID, majorID, bookmarkMD, user_sim = list_of_tuple[i]
-            print("{0:<25}{1:<10}{2:<10}{3:>10}".format(admission_id, schoolID, majorID, user_sim))
-
-        '''rq = RiskQuery(self)
-        rq.instructions('SELECT applicantID,bookmark_file FROM admission WHERE bookmark_file IS NOT NULL')
-        rq.do()
-        admission_result = rq.format_results()
-
-        # 将取出的用逗号隔开的字符串转化为字典格式
-        dic = list_to_dic(admission_result)
-        print(dic)
-        # 将传入的书签和字典里的所有值进行计算得出相似度并重新赋给对应的键（id）
-        for item in dic:
-            print(item)
-            print(dic[item])
-            dic[item] = bookmark_analysis.like_distance(dic[item], bookmark_file)
-        # 按相似度从大到小排序
-        dic = sorted(dic.items(), key=lambda x: x[1], reverse=True)
-        print(dic)
-        for i in range(len(dic)):
-            admission_id, user_sim = dic[i]
-            print("{0:<25}{1:>5}".format(admission_id, user_sim))
-        print("{0:<25}{1:>5}".format('ID', 'similarity'))'''
-        return True
-
-
-def list_to_dic(results):
-    list_of_result = []
-    for result in results:
-        # print(result)
-        # print((result[0: result.rfind(',')], result[result.rfind(',') + 1:]))
-        tuple_of_result = (result[0: result.rfind(',')], result[result.rfind(',') + 1:])
-        list_of_result.append(tuple_of_result)
-    # print(list_of_result)
-    # print(dict(list_of_result))
-    return dict(list_of_result)
+            appraiserID, schoolID, majorID, minimumRequirement, bookmarkFile, star, tendency = list_of_tuple[i]
+            print("{0:<15}{1:<15}{2:<10}".format(schoolID, majorID, tendency))
+        return list_of_tuple
 
 
 if __name__ == '__main__':
-    # read_browse_history()
-    MajorRecommender.calc_user_sim('data.db', '../resource/书签/书签地球_1618830145650.md')
+    applicant = Applicant('650', '../src/bookmark/书签地球_1618832316906.md')
+    mr = MajorRecommender()
+    mr.recommend_for(applicant)
     # print(bookmark_analysis.like_distance('../resource/书签/书签地球_1618830145650.md','../resource/书签/书签地球_1618112020822.md'))

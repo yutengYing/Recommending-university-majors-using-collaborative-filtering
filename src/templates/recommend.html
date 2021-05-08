@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+  {% from 'macros.html' import form_field %}
+  <ul><a>school id</a>&nbsp
+      <a>major id</a>&nbsp
+      <a>recommend level</a>&nbsp
+  </ul>
+  <ol>
+    {% for appliacnt_recommend in appliacnt_recommend_list: %}
+      <li><a>{{ appliacnt_recommend[1] }}&nbsp&nbsp&nbsp&nbsp&nbsp</a>
+          <a>{{ appliacnt_recommend[2] }}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</a>
+          <a>{{ appliacnt_recommend[6] }}&nbsp&nbsp</a>
+      </li>
+    {% endfor %}
+  </ol>
+</body>
+</html>

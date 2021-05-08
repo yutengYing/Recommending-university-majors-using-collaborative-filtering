@@ -10,14 +10,14 @@ class BookMark:
         self.filename = filename
 
     def get_markdown_name(self):
-        position = os.path.splitext(self)
+        position = os.path.splitext(self.filename)
         markdown_name = position[0] + '.md'
         # print(markdown_name)
         return markdown_name
 
     def html_to_markdown(self):
         markdown_name = BookMark.get_markdown_name(self)
-        to_markdown.main(self, markdown_name)
+        to_markdown.main(self.filename, markdown_name)
 
     def keep_title(self):
         file = BookMark.get_markdown_name(self)
@@ -31,7 +31,6 @@ class BookMark:
                 # print(titles)
             with open(file, 'w', encoding='utf-8') as f1:
                 for t in titles:
-                    # print(t[2: -2])
                     f1.write(t[2: -2] + '\n')
 
     def like_vector(self):
@@ -39,23 +38,15 @@ class BookMark:
         txt = open(filename, "r", encoding='utf-8').read()
         words = jieba.lcut(txt)  # 使用精确模式对文本进行分词
         counts = {}  # 通过键值对的形式存储词语及其出现的次数
-        # removed_words = ['https', 'com', 'http']
 
         for word in words:
             if len(word) == 1:  # 单个词语不计算在内
                 continue
-            # elif word in removed_words:
-            #     continue
             else:
                 counts[word] = counts.get(word, 0) + 1  # 遍历所有词语，每出现一次其对应的值加 1
 
         items = list(counts.items())
         items.sort(key=lambda x: x[1], reverse=True)  # 根据词语出现的次数进行从大到小排序
-
-        # print(items[0:30])
-        # for i in range(20):
-        # word, count = items[i]
-        # print("{0:<5}{1:>5}".format(word, count))
 
         return items[0:20]
 
@@ -86,28 +77,12 @@ def like_distance_helper(dict1, dict2):
     return round(result1 / ((result2 * result3) ** 0.5), 4)
 
 
-def transform(root_path):
-    files = os.listdir(root_path)
-    for file in files:
-        print(root_path + '/' + file)
-        # BookMark.html_to_markdown(root_path + '/' + file)
-        # BookMark.keep_title(root_path + '/' + file)
-
-    #     if not os.path.isdir(root_path + '/' + file):  # not a dir
-    #         all_files.append(root_path + '/' + file)
-    #     else:  # is a dir
-    #         get_file((root_path + '/' + file), all_files)
-    # return all_files
-
-
 if __name__ == "__main__":
-    # BookMark.get_markdown_name('../resource/书签/书签地球_1618112030364.html')
-    # BookMark.html_to_markdown('../resource/书签/书签地球_1618112030364.html')
-    # BookMark.keep_title('../resource/书签/书签地球_1618112030364.html')
-    # BookMark.html_to_markdown('../resource/书签/书签地球_1618112020822.html')
-    # BookMark.keep_title('../resource/书签/书签地球_1618112020822.html')
-    # print(like_distance('../resource/书签/书签地球_1618112020822.md', '../resource/书签/书签地球_1618112030364.md'))
+    bk = BookMark('../src/bookmark/书签地球_1618112020822.html')
+    print(bk.get_markdown_name())
+    bk.html_to_markdown()
+    bk.keep_title()
     # print(like_distance_helper({'哔哩': 2}, {'哔哩': 10}))
     # print(like_distance_helper({'哔哩': 2}, {'莉莉': 2}))
-    # print(like_distance_helper({}, {'莉莉': 2})).
-    transform('../resource/书签')
+    # print(like_distance_helper({}, {'莉莉': 2}))
+
