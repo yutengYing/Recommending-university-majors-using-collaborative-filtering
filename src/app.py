@@ -16,12 +16,7 @@ app.config["SECRET_KEY"] = "12345678"
 app.config['UPLOAD_PATH'] = os.path.join(app.root_path, 'bookmark')
 
 
-@app.route("/")
-def main_page():
-    return render_template('index.html')
-
-
-@app.route("/upload", methods=['GET', 'POST'])
+@app.route("/", methods=['GET', 'POST'])
 def upload():
     form = UploadForm()
     if form.validate_on_submit():
@@ -63,7 +58,7 @@ def random_filename(filename):
 class UploadForm(FlaskForm):
     bookmark = FileField('Upload bookmark_file', validators=[FileRequired(), FileAllowed(['html'])])
     scores = StringField('Type your scores', validators=[DataRequired()])
-    submit = SubmitField()
+    submit = SubmitField('Recommend for me')
 
 
 if __name__ == '__main__':

@@ -17,11 +17,14 @@ class MajorRecommender:
         bookmark_file = applicant.bookmark_file
 
         rq = RiskQuery(self.db_filename)
-        rq.instructions('SELECT appraiserID,school_ID,ID,minimum_requirement,bookmark_file,appraisalForMajor.star '
-                        'FROM major,appraisalForMajor '
+        rq.instructions('SELECT appraiserID,school.name,major.name,minimum_requirement,bookmark_file,'
+                        'appraisalForMajor.star '
+                        'FROM major,appraisalForMajor,applicant,school '
                         'WHERE major.ID = appraisalForMajor.majorID '
-                        'and major.school_ID = appraisalForMajor.schoolID '
-                        'and appraisalForMajor.bookmark_file is not null ')
+                        'AND major.school_ID = appraisalForMajor.schoolID '
+                        'AND appraisalForMajor.schoolID = school.ID '
+                        'AND appraiserID = applicant.ID '
+                        'AND bookmark_file IS NOT NULL ')
         rq.do()
         appraisal_result = rq.format_results()
 
@@ -44,10 +47,10 @@ class MajorRecommender:
         # 按相似度从大到小排序
         list_of_tuple.sort(key=lambda x: x[6], reverse=True)
         # print(list_of_tuple)
-        print("{0:<15}{1:<15}{2:<10}".format('School ID', 'Major ID', 'Recommend Level'))
+        print("{0:<20}{1:<15}{2:<10}".format('School Name', 'Major Name', 'Recommendation Level'))
         for i in range(len(list_of_tuple)):
             appraiserID, schoolID, majorID, minimumRequirement, bookmarkFile, star, tendency = list_of_tuple[i]
-            print("{0:<15}{1:<15}{2:<10}".format(schoolID, majorID, tendency))
+            print("{0:<20}{1:<15}{2:<10}".format(schoolID, majorID, tendency))
         return list_of_tuple
 
 
