@@ -9,7 +9,7 @@ from wtforms import SubmitField, StringField
 from wtforms.validators import DataRequired
 
 from bookmark_analysis import BookMark
-from src.Recommend import Applicant, MajorRecommender
+from Recommend import Applicant, MajorRecommender
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "12345678"
@@ -38,10 +38,10 @@ def upload():
 
 @app.route('/recommend')
 def recommend():
-    appliacnt = Applicant(session['scores'], session['filenames'])
+    applicant = Applicant(session['scores'], session['filenames'])
     mr = MajorRecommender()
-    appliacnt_recommend_list = mr.recommend_for(appliacnt)
-    return render_template('recommend.html', appliacnt_recommend_list=appliacnt_recommend_list)
+    applicant_recommend_list = mr.recommend_for(applicant)
+    return render_template('recommend.html', applicant_recommend_list=applicant_recommend_list)
 
 
 @app.route('/upload/<path:filename>')

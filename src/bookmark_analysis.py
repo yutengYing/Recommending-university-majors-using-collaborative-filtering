@@ -78,10 +78,11 @@ def like_distance_helper(dict1, dict2):
 
 
 if __name__ == "__main__":
-    bk = BookMark('../src/bookmark/书签地球_1618112020822.html')
+    bk = BookMark('../src/bookmark/书签地球_1618832338197.md')
     print(bk.get_markdown_name())
-    bk.html_to_markdown()
-    bk.keep_title()
+    # bk.html_to_markdown()
+    # bk.keep_title()
+    print(bk.like_vector())
     # print(like_distance_helper({'哔哩': 2}, {'哔哩': 10}))
     # print(like_distance_helper({'哔哩': 2}, {'莉莉': 2}))
     # print(like_distance_helper({}, {'莉莉': 2}))

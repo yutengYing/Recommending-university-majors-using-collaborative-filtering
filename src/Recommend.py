@@ -42,7 +42,6 @@ class MajorRecommender:
                 tendency = [str(round(similarity * int(result[5]), 3))]
                 result += tuple(tendency)
                 list_of_tuple.append(result)
-        # print(list_of_tuple)
 
         # 按相似度从大到小排序
         list_of_tuple.sort(key=lambda x: x[6], reverse=True)
