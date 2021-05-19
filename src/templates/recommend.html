@@ -14,9 +14,9 @@
       </tr>
       {% for applicant_recommend in applicant_recommend_list: %}
       <tr>
-          <td>{{ applicant_recommend[1] }}</td>
-          <td>{{ applicant_recommend[2] }}</td>
-          <td>{{ applicant_recommend[6] }}</td>
+          <td>{{ applicant_recommend[2] }}({{ applicant_recommend[1] }})</td>
+          <td>{{ applicant_recommend[4] }}({{ applicant_recommend[3] }})</td>
+          <td>{{ applicant_recommend[8] }}</td>
       </tr>
       {% endfor %}
   </table>

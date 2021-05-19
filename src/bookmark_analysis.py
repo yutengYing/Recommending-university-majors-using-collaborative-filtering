@@ -65,7 +65,6 @@ def like_distance_helper(dict1, dict2):
     z = {dict1[x]: dict2[x] for x in dict1 if x in dict2}
     x = list(z.keys())
     y = list(z.values())
-    # print(x)
     result1 = 0.0
     result2 = 0.0
     result3 = 0.0
@@ -78,7 +77,7 @@ def like_distance_helper(dict1, dict2):
 
 
 if __name__ == "__main__":
-    bk = BookMark('../src/bookmark/书签地球_1618832338197.md')
+    bk = BookMark('static/bookmark/书签地球_1618832338197.md')
     print(bk.get_markdown_name())
     # bk.html_to_markdown()
     # bk.keep_title()

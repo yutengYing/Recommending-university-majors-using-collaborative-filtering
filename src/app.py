@@ -13,7 +13,7 @@ from Recommend import Applicant, MajorRecommender
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "12345678"
-app.config['UPLOAD_PATH'] = os.path.join(app.root_path, 'bookmark')
+app.config['UPLOAD_PATH'] = os.path.join(app.root_path, 'static/bookmark')
 
 
 @app.route("/", methods=['GET', 'POST'])
@@ -56,9 +56,9 @@ def random_filename(filename):
 
 
 class UploadForm(FlaskForm):
-    bookmark = FileField('Upload bookmark_file', validators=[FileRequired(), FileAllowed(['html'])])
-    scores = StringField('Type your scores', validators=[DataRequired()])
-    submit = SubmitField('Recommend for me')
+    bookmark = FileField('Upload my bookmark file (Note: you can download your bookmark file in your browser.)', validators=[FileRequired(), FileAllowed(['html'])])
+    scores = StringField('Enter your Gaokao total score:', validators=[DataRequired()])
+    submit = SubmitField('RECOMMEND')
 
 
 if __name__ == '__main__':
