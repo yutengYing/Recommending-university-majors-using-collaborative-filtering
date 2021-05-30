@@ -1,3 +1,4 @@
+# Copyright (C) 2021 Yuteng Ying
 from UseSqlite import RiskQuery
 import bookmark_analysis
 
